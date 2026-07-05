@@ -42,7 +42,11 @@ SELECT
   CASE WHEN total_chc_usage >= 100 THEN TRUE ELSE FALSE END AS is_curr_period_customer,
   CASE WHEN previous_total_chc_usage >= 100 THEN TRUE ELSE FALSE END AS is_prev_period_customer,
   CASE WHEN previous_total_chc_usage < 100 AND total_chc_usage >= 100 THEN TRUE ELSE FALSE END AS crossed_active_threshold_curr_period,
-  CASE WHEN previous_total_chc_usage >= 100 AND total_chc_usage < 100 THEN TRUE ELSE FALSE END AS crossed_churn_threshold_curr_period
+  CASE WHEN previous_total_chc_usage >= 100 AND total_chc_usage < 100 THEN TRUE ELSE FALSE END AS crossed_churn_threshold_curr_period,
+  CASE WHEN previous_total_chc_usage < 100 AND total_chc_usage < 100 THEN TRUE ELSE FALSE END AS below_churn_threshold_two_conesq_periods,
+  CASE WHEN two_previous_total_chc_usage < 100 AND previous_total_chc_usage < 100 AND total_chc_usage < 100 THEN TRUE ELSE FALSE END AS below_churn_threshold_three_conesq_periods,
+  MIN(CASE WHEN total_chc_usage >= 100 THEN month END) OVER (PARTITION BY entity_id) AS first_customer_month,
+  MAX(CASE WHEN total_chc_usage >= 100 THEN month END) OVER (PARTITION BY entity_id) AS last_customer_month
 FROM
   UST
 ORDER BY 2 ASC, 1 ASC
