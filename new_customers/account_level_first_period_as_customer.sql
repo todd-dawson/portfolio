@@ -10,7 +10,7 @@ to the growthy of the customer base across such dimensions.
 
 WITH THRESH AS (
   SELECT
-    DATE_TRUNC(MONTH, timestamp_hour) AS period,
+    DATE_TRUNC('month', timestamp_hour) AS period,
     COALESCE(CASE WHEN account__id = '' THEN NULL ELSE account__id END, organization__id) as entity_id,
     SUM(toFloat64(organization__CHC_usage)) as total_chc_usage
   FROM
