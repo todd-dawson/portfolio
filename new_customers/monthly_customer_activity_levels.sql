@@ -20,7 +20,7 @@ U AS (
     COALESCE(CASE WHEN account__id = '' THEN NULL ELSE account__id END, organization__id) as entity_id,
     SUM(toFloat64(organization__CHC_usage)) as total_chc_usage
   FROM
-    default.demo_usage_data_9
+    usage_history
   GROUP BY 1,2
   ),
   
